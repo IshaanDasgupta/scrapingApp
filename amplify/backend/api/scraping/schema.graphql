@@ -1,0 +1,39 @@
+type Event @model @searchable @auth(rules: [{allow: owner}]) {
+  id: ID!
+  name: String!
+  description: String
+  eventType: typeEnum!
+  eventPlatform: platfromEnum!
+}
+
+enum typeEnum {
+  hackathon
+  internship
+  contest
+  job
+  others
+}
+
+enum platfromEnum {
+  gfg
+  leetcode
+  codeChef
+  codeForces
+  unstop
+  others
+}
+
+type Bookmark @model @searchable @auth(rules: [{allow: owner}]) {
+  id: ID!
+  eventID: ID
+  event: Event @hasOne(fields: ["eventID"])
+}
+
+type Todo @model @searchable @auth(rules: [{allow: owner}]) {
+  id: ID!
+  name: String!
+  description: String
+  date: AWSDate!
+  eventID: ID
+  event: Event @hasOne(fields: ["eventID"])
+}
