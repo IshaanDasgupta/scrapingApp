@@ -25,7 +25,8 @@ enum platfromEnum {
 
 type Bookmark @model @searchable @auth(rules: [{allow: owner}]) {
   id: ID!
-  eventID: ID
+  eventID: ID!
+  eventName: String!
   event: Event @hasOne(fields: ["eventID"])
 }
 

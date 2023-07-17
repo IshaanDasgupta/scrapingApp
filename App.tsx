@@ -8,12 +8,13 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from './src/components/Home/Home';
-import Search from './src/components/Search/Search';
-import Profile from './src/components/Profile/Profile';
+import HomeFragment from './src/fragments/HomeFragment';
+import BookmarksFragment from './src/fragments/BookmarksFragment';
+import ProfileFragment from './src/fragments/ProfileFragment';
 import {withAuthenticator} from '@aws-amplify/ui-react-native';
 import {Amplify} from 'aws-amplify';
 import awsExports from './src/aws-exports';
+
 Amplify.configure(awsExports);
 
 function App(): JSX.Element {
@@ -22,11 +23,11 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="HomeFragment"
         screenOptions={{headerShown: false}}>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Search" component={Search} />
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name="HomeFragment" component={HomeFragment} />
+        <Tab.Screen name="BookmarksFragment" component={BookmarksFragment} />
+        <Tab.Screen name="ProfileFragment" component={ProfileFragment} />
       </Tab.Navigator>
     </NavigationContainer>
   );

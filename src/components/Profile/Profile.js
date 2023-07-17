@@ -41,41 +41,39 @@ function Profile({navigation}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.scroll}>
-        <ScrollView>
-          <View style={styles.background} />
-          <View style={styles.mainContent}>
-            <View style={styles.profileCard}>
-              <View style={styles.profilePicContainer}></View>
-              <Text style={styles.username}>{user.username}</Text>
-              <Text style={styles.email}>{user.attributes.email}</Text>
-            </View>
-
-            {options.map((option, index) => {
-              return option.title === 'Logout' ? (
-                <Pressable
-                  style={styles.optionCard}
-                  key={index}
-                  onPress={signOut}>
-                  <View style={styles.info}>
-                    <Text style={styles.icon}>{option.icon}</Text>
-                    <Text style={styles.text}>{option.title}</Text>
-                  </View>
-                  <Text style={styles.navigationIcon}>_</Text>
-                </Pressable>
-              ) : (
-                <View style={styles.optionCard} key={index}>
-                  <View style={styles.info}>
-                    <Text style={styles.icon}>{option.icon}</Text>
-                    <Text style={styles.text}>{option.title}</Text>
-                  </View>
-                  <Text style={styles.navigationIcon}>_</Text>
-                </View>
-              );
-            })}
+      <ScrollView>
+        <View style={styles.background} />
+        <View style={styles.mainContent}>
+          <View style={styles.profileCard}>
+            <View style={styles.profilePicContainer}></View>
+            <Text style={styles.username}>{user.username}</Text>
+            <Text style={styles.email}>{user.attributes.email}</Text>
           </View>
-        </ScrollView>
-      </View>
+
+          {options.map((option, index) => {
+            return option.title === 'Logout' ? (
+              <Pressable
+                style={styles.optionCard}
+                key={index}
+                onPress={signOut}>
+                <View style={styles.info}>
+                  <Text style={styles.icon}>{option.icon}</Text>
+                  <Text style={styles.text}>{option.title}</Text>
+                </View>
+                <Text style={styles.navigationIcon}>_</Text>
+              </Pressable>
+            ) : (
+              <View style={styles.optionCard} key={index}>
+                <View style={styles.info}>
+                  <Text style={styles.icon}>{option.icon}</Text>
+                  <Text style={styles.text}>{option.title}</Text>
+                </View>
+                <Text style={styles.navigationIcon}>_</Text>
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -84,9 +82,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f7fb',
-  },
-  scroll: {
-    flex: 1,
   },
   background: {
     width: '100%',

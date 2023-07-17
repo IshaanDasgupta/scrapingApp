@@ -21,60 +21,54 @@ import Card from '../commonComponents/Card';
 function Home({navigation}) {
   const [events, setEvents] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
+  const [searchedEvents, setSearchedEvents] = useState([]);
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    // const fetchEvents = async () => {
-    //   try {
-    //     const eventData = await API.graphql({
-    //       query: listEvents,
-    //       authMode: 'AMAZON_COGNITO_USER_POOLS',
-    //     });
-    //     setEvents(eventData.data.listEvents.items);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-
-    const fetchBookmakrs = async () => {
+    const fetchEvents = async () => {
       try {
         const eventData = await API.graphql({
-          query: listBookmarksExcludingEvent,
+          query: listEvents,
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         });
-        // console.log(eventData.data.listBookmarks.items);
-        setBookmarks(eventData.data.listBookmarks.items);
+        setEvents(eventData.data.listEvents.items);
       } catch (err) {
         console.log(err);
       }
     };
 
-    // fetchEvents();
+    const fetchBookmakrs = async () => {
+      try {
+        const bookmarkData = await API.graphql({
+          query: listBookmarksExcludingEvent,
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        });
+        // console.log(eventData.data.listBookmarks.items);
+        setBookmarks(bookmarkData.data.listBookmarks.items);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchEvents();
     fetchBookmakrs();
   }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        console.log(searchText);
-        let searchStr = '*';
-        for (let i = 0; i < searchText.length; i++) {
-          searchStr += searchText[i];
-          searchStr += '*';
-        }
-        console.log(searchStr);
         const res = await API.graphql({
           query: searchEventsForOnlyEvent,
           variables: {
             filter: {
               name: {
-                wildcard: searchStr,
+                matchPhrasePrefix: searchText,
               },
             },
           },
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         });
-        setEvents(res.data.searchEvents.items);
+        setSearchedEvents(res.data.searchEvents.items);
       } catch (err) {
         console.log(err);
       }
@@ -83,48 +77,54 @@ function Home({navigation}) {
     fetchEvents();
   }, [searchText]);
 
-  const data = {
-    name: 'dummy name',
-    time: '13/07',
-  };
-
   return (
     <View style={styles.container}>
-      <View style={styles.scroll}>
-        <ScrollView>
-          <View style={styles.background}>
-            <View>
-              <Text style={styles.welcomeText}>Welcome Back &#128075;</Text>
-              <Text style={styles.username}>Ishaan</Text>
-            </View>
-            <View style={styles.notificationContainer}></View>
+      <ScrollView>
+        <View style={styles.background}>
+          <View>
+            <Text style={styles.welcomeText}>Welcome Back &#128075;</Text>
+            <Text style={styles.username}>Ishaan</Text>
           </View>
-          <View style={styles.mainContent}>
-            <SearchBar searchText={searchText} setSearchText={setSearchText} />
-            <Text style={styles.heading}>Category</Text>
-            <Catagories />
-            {searchText.length === 0 && (
-              <View>
-                <Text style={styles.heading}>Featured</Text>
-                <CustomCarousel />
-              </View>
-            )}
-            <Text style={styles.heading}>Recent Events</Text>
-            <View style={styles.cardsFlex}>
-              {events &&
+          <View style={styles.notificationContainer}></View>
+        </View>
+        <View style={styles.mainContent}>
+          <SearchBar searchText={searchText} setSearchText={setSearchText} />
+          <Text style={styles.heading}>Category</Text>
+          <Catagories />
+          {searchText.length === 0 && (
+            <View>
+              <Text style={styles.heading}>Featured</Text>
+              <CustomCarousel />
+            </View>
+          )}
+          <Text style={styles.heading}>Recent Events</Text>
+          <View style={styles.cardsFlex}>
+            {searchText.length === 0
+              ? events &&
                 events.map(event => {
                   return (
                     <Card
                       data={event}
                       bookmarks={bookmarks}
                       setBookmarks={setBookmarks}
+                      navigation={navigation}
+                    />
+                  );
+                })
+              : searchedEvents &&
+                searchedEvents.map(event => {
+                  return (
+                    <Card
+                      data={event}
+                      bookmarks={bookmarks}
+                      setBookmarks={setBookmarks}
+                      navigation={navigation}
                     />
                   );
                 })}
-            </View>
           </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -133,9 +133,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f7fb',
-  },
-  scroll: {
-    flex: 1,
   },
   background: {
     width: '100%',
@@ -168,8 +165,8 @@ const styles = StyleSheet.create({
     top: -50,
   },
   heading: {
-    fontSize: 12,
-    color: '#262626',
+    fontSize: 14,
+    color: '#000',
     marginBottom: 20,
   },
   cardsFlex: {

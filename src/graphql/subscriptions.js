@@ -63,6 +63,7 @@ export const onCreateBookmark = /* GraphQL */ `
     onCreateBookmark(filter: $filter, owner: $owner) {
       id
       eventID
+      eventName
       event {
         id
         name
@@ -89,6 +90,7 @@ export const onUpdateBookmark = /* GraphQL */ `
     onUpdateBookmark(filter: $filter, owner: $owner) {
       id
       eventID
+      eventName
       event {
         id
         name
@@ -115,6 +117,7 @@ export const onDeleteBookmark = /* GraphQL */ `
     onDeleteBookmark(filter: $filter, owner: $owner) {
       id
       eventID
+      eventName
       event {
         id
         name

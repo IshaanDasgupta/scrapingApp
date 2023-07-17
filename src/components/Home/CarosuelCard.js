@@ -21,9 +21,7 @@ function CarosuelCard({data}) {
           <Text style={styles.title}>Leetcode Weekly Contest</Text>
           <Text style={styles.description}>13 June 2023 - 0 days left</Text>
         </View>
-        <View>
-          <Image source={tempLogo} style={styles.icon}></Image>
-        </View>
+        <Image source={tempLogo} style={styles.icon}></Image>
       </View>
     </View>
   );

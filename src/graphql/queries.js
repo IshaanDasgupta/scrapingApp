@@ -121,6 +121,7 @@ export const searchBookmarks = /* GraphQL */ `
       items {
         id
         eventID
+        eventName
         event {
           id
           name
@@ -136,6 +137,98 @@ export const searchBookmarks = /* GraphQL */ `
         updatedAt
         owner
         __typename
+      }
+      nextToken
+      total
+      aggregateItems {
+        name
+        result {
+          ... on SearchableAggregateScalarResult {
+            value
+          }
+          ... on SearchableAggregateBucketResult {
+            buckets {
+              key
+              doc_count
+              __typename
+            }
+          }
+        }
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const searchBookmarksForOnlyEvents = /* GraphQL */ `
+  query SearchBookmarks(
+    $filter: SearchableBookmarkFilterInput
+    $sort: [SearchableBookmarkSortInput]
+    $limit: Int
+    $nextToken: String
+    $from: Int
+    $aggregates: [SearchableBookmarkAggregationInput]
+  ) {
+    searchBookmarks(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+      aggregates: $aggregates
+    ) {
+      items {
+        id
+        eventID
+        event {
+          id
+          name
+          description
+          eventType
+          eventPlatform
+        }
+      }
+      nextToken
+      total
+      aggregateItems {
+        name
+        result {
+          ... on SearchableAggregateScalarResult {
+            value
+          }
+          ... on SearchableAggregateBucketResult {
+            buckets {
+              key
+              doc_count
+              __typename
+            }
+          }
+        }
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const searchBookmarksForID = /* GraphQL */ `
+  query SearchBookmarks(
+    $filter: SearchableBookmarkFilterInput
+    $sort: [SearchableBookmarkSortInput]
+    $limit: Int
+    $nextToken: String
+    $from: Int
+    $aggregates: [SearchableBookmarkAggregationInput]
+  ) {
+    searchBookmarks(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+      aggregates: $aggregates
+    ) {
+      items {
+        id
       }
       nextToken
       total
@@ -263,6 +356,7 @@ export const getBookmark = /* GraphQL */ `
     getBookmark(id: $id) {
       id
       eventID
+      eventName
       event {
         id
         name
@@ -291,6 +385,7 @@ export const listBookmarks = /* GraphQL */ `
       items {
         id
         eventID
+        eventName
         event {
           id
           name

@@ -5,17 +5,8 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  Image,
-  ScrollView,
-  TextInput,
-} from 'react-native';
-import Card from '../commonComponents/Card';
+import React from 'react';
+import {StyleSheet, TextInput} from 'react-native';
 
 import searchIcon from '../../../static/SearchIcon.png';
 

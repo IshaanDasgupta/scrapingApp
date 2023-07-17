@@ -63,6 +63,7 @@ export const createBookmark = /* GraphQL */ `
     createBookmark(input: $input, condition: $condition) {
       id
       eventID
+      eventName
       event {
         id
         name
@@ -89,6 +90,7 @@ export const addBookmark = /* GraphQL */ `
     createBookmark(input: $input, condition: $condition) {
       id
       eventID
+      eventName
     }
   }
 `;
@@ -100,6 +102,7 @@ export const updateBookmark = /* GraphQL */ `
     updateBookmark(input: $input, condition: $condition) {
       id
       eventID
+      eventName
       event {
         id
         name
@@ -126,6 +129,7 @@ export const deleteBookmark = /* GraphQL */ `
     deleteBookmark(input: $input, condition: $condition) {
       id
       eventID
+      eventName
       event {
         id
         name

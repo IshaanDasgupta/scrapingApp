@@ -12,13 +12,15 @@ import {
   View,
   Image,
   TouchableWithoutFeedback,
+  Pressable,
+  TouchableNativeFeedback,
 } from 'react-native';
 import tempLogo from '../../../static/tempLogo.png';
 import {API} from 'aws-amplify';
 import {addBookmark, deleteBookmark} from '../../graphql/mutations';
 
 function Card(props) {
-  const {data, bookmarks, setBookmarks} = props;
+  const {data, bookmarks, setBookmarks, navigation} = props;
 
   const [bookmarked, setBookmarked] = useState(undefined);
   const [buffering, setBuffering] = useState(false);
@@ -39,6 +41,7 @@ function Card(props) {
         variables: {
           input: {
             eventID: data.id,
+            eventName: data.name,
           },
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
@@ -87,25 +90,31 @@ function Card(props) {
     setBuffering(false);
   };
 
+  const handlePress = () => {
+    navigation.navigate('Event', {eventID: data.id, origin: 'Home'});
+  };
+
   return (
-    <View style={styles.card}>
-      <View style={styles.bookmarkContainer}>
-        <TouchableWithoutFeedback onPress={handleBookmark}>
-          <View>
-            {bookmarked === false ? (
-              <Text style={styles.bookmarkIcon}>B</Text>
-            ) : (
-              <Text style={styles.bookmarkIcon}>O</Text>
-            )}
+    <View>
+      <TouchableWithoutFeedback onPress={handleBookmark}>
+        <View style={styles.bookmarkContainer}>
+          {bookmarked === false ? (
+            <Text style={styles.bookmarkIcon}>B</Text>
+          ) : (
+            <Text style={styles.bookmarkIcon}>O</Text>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={handlePress}>
+        <View style={styles.card}>
+          <View style={styles.infoContainer}>
+            <Text style={styles.name}>{data.name}</Text>
+            <Text style={styles.time}>{data.time}</Text>
+            <Text style={styles.timeLeft}>3 Days Left</Text>
           </View>
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.name}>{data.name}</Text>
-        <Text style={styles.time}>{data.time}</Text>
-        <Text style={styles.timeLeft}>3 Days Left</Text>
-      </View>
-      <Image source={tempLogo} style={styles.image} />
+          <Image source={tempLogo} style={styles.image} />
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
@@ -118,7 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 20,
-    backgroundColor: '#537705',
+    backgroundColor: '#ff4260',
     position: 'relative',
   },
   bookmarkContainer: {
