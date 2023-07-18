@@ -1,7 +1,10 @@
 type Event @model @searchable @auth(rules: [{allow: owner}]) {
   id: ID!
   name: String!
-  description: String
+  date: AWSDate!
+  duration: String
+  time: AWSTime
+  featured: Boolean
   eventType: typeEnum!
   eventPlatform: platfromEnum!
 }
@@ -32,9 +35,9 @@ type Bookmark @model @searchable @auth(rules: [{allow: owner}]) {
 
 type Todo @model @searchable @auth(rules: [{allow: owner}]) {
   id: ID!
-  name: String!
   description: String
   date: AWSDate!
-  eventID: ID
-  event: Event @hasOne(fields: ["eventID"])
+  eventID: ID!
+  eventName: String!
+  completed: Boolean
 }

@@ -16,7 +16,7 @@ import {
 import SearchBar from './SearchBar';
 import Catagories from './Categories';
 import CustomCarousel from './CustomCarousel';
-import Card from '../commonComponents/Card';
+import Card from './Card';
 
 function Home({navigation}) {
   const [events, setEvents] = useState([]);

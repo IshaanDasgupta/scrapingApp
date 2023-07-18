@@ -9,7 +9,10 @@ export const onCreateEvent = /* GraphQL */ `
     onCreateEvent(filter: $filter, owner: $owner) {
       id
       name
-      description
+      date
+      duration
+      time
+      featured
       eventType
       eventPlatform
       createdAt
@@ -27,7 +30,10 @@ export const onUpdateEvent = /* GraphQL */ `
     onUpdateEvent(filter: $filter, owner: $owner) {
       id
       name
-      description
+      date
+      duration
+      time
+      featured
       eventType
       eventPlatform
       createdAt
@@ -45,7 +51,10 @@ export const onDeleteEvent = /* GraphQL */ `
     onDeleteEvent(filter: $filter, owner: $owner) {
       id
       name
-      description
+      date
+      duration
+      time
+      featured
       eventType
       eventPlatform
       createdAt
@@ -67,7 +76,10 @@ export const onCreateBookmark = /* GraphQL */ `
       event {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -94,7 +106,10 @@ export const onUpdateBookmark = /* GraphQL */ `
       event {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -121,7 +136,10 @@ export const onDeleteBookmark = /* GraphQL */ `
       event {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -143,21 +161,11 @@ export const onCreateTodo = /* GraphQL */ `
   ) {
     onCreateTodo(filter: $filter, owner: $owner) {
       id
-      name
       description
       date
       eventID
-      event {
-        id
-        name
-        description
-        eventType
-        eventPlatform
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
+      eventName
+      completed
       createdAt
       updatedAt
       owner
@@ -172,21 +180,11 @@ export const onUpdateTodo = /* GraphQL */ `
   ) {
     onUpdateTodo(filter: $filter, owner: $owner) {
       id
-      name
       description
       date
       eventID
-      event {
-        id
-        name
-        description
-        eventType
-        eventPlatform
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
+      eventName
+      completed
       createdAt
       updatedAt
       owner
@@ -201,21 +199,11 @@ export const onDeleteTodo = /* GraphQL */ `
   ) {
     onDeleteTodo(filter: $filter, owner: $owner) {
       id
-      name
       description
       date
       eventID
-      event {
-        id
-        name
-        description
-        eventType
-        eventPlatform
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
+      eventName
+      completed
       createdAt
       updatedAt
       owner

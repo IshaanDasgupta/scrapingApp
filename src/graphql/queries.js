@@ -21,7 +21,10 @@ export const searchEvents = /* GraphQL */ `
       items {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -71,13 +74,11 @@ export const searchEventsForOnlyEvent = /* GraphQL */ `
       items {
         id
         name
-        description
+        date
+        duration
+        time
         eventType
         eventPlatform
-        createdAt
-        updatedAt
-        owner
-        __typename
       }
       nextToken
       total
@@ -125,7 +126,10 @@ export const searchBookmarks = /* GraphQL */ `
         event {
           id
           name
-          description
+          date
+          duration
+          time
+          featured
           eventType
           eventPlatform
           createdAt
@@ -180,10 +184,13 @@ export const searchBookmarksForOnlyEvents = /* GraphQL */ `
       items {
         id
         eventID
+        eventName
         event {
           id
           name
-          description
+          date
+          duration
+          time
           eventType
           eventPlatform
         }
@@ -271,25 +278,59 @@ export const searchTodos = /* GraphQL */ `
     ) {
       items {
         id
-        name
         description
         date
         eventID
-        event {
-          id
-          name
-          description
-          eventType
-          eventPlatform
-          createdAt
-          updatedAt
-          owner
-          __typename
-        }
+        eventName
+        completed
         createdAt
         updatedAt
         owner
         __typename
+      }
+      nextToken
+      total
+      aggregateItems {
+        name
+        result {
+          ... on SearchableAggregateScalarResult {
+            value
+          }
+          ... on SearchableAggregateBucketResult {
+            buckets {
+              key
+              doc_count
+              __typename
+            }
+          }
+        }
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const searchTodosInEvent = /* GraphQL */ `
+  query SearchTodos(
+    $filter: SearchableTodoFilterInput
+    $sort: [SearchableTodoSortInput]
+    $limit: Int
+    $nextToken: String
+    $from: Int
+    $aggregates: [SearchableTodoAggregationInput]
+  ) {
+    searchTodos(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+      aggregates: $aggregates
+    ) {
+      items {
+        id
+        description
+        date
       }
       nextToken
       total
@@ -318,7 +359,10 @@ export const getEvent = /* GraphQL */ `
     getEvent(id: $id) {
       id
       name
-      description
+      date
+      duration
+      time
+      featured
       eventType
       eventPlatform
       createdAt
@@ -338,7 +382,10 @@ export const listEvents = /* GraphQL */ `
       items {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -360,7 +407,10 @@ export const getBookmark = /* GraphQL */ `
       event {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -389,7 +439,10 @@ export const listBookmarks = /* GraphQL */ `
         event {
           id
           name
-          description
+          date
+          duration
+          time
+          featured
           eventType
           eventPlatform
           createdAt
@@ -434,13 +487,12 @@ export const listBookmarksWithOnlyEvent = /* GraphQL */ `
         event {
           id
           name
-          description
+          date
+          duration
+          time
+          featured
           eventType
           eventPlatform
-          createdAt
-          updatedAt
-          owner
-          __typename
         }
       }
     }
@@ -450,21 +502,11 @@ export const getTodo = /* GraphQL */ `
   query GetTodo($id: ID!) {
     getTodo(id: $id) {
       id
-      name
       description
       date
       eventID
-      event {
-        id
-        name
-        description
-        eventType
-        eventPlatform
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
+      eventName
+      completed
       createdAt
       updatedAt
       owner
@@ -481,21 +523,11 @@ export const listTodos = /* GraphQL */ `
     listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
         description
         date
         eventID
-        event {
-          id
-          name
-          description
-          eventType
-          eventPlatform
-          createdAt
-          updatedAt
-          owner
-          __typename
-        }
+        eventName
+        completed
         createdAt
         updatedAt
         owner

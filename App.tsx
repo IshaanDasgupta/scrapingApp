@@ -14,6 +14,7 @@ import ProfileFragment from './src/fragments/ProfileFragment';
 import {withAuthenticator} from '@aws-amplify/ui-react-native';
 import {Amplify} from 'aws-amplify';
 import awsExports from './src/aws-exports';
+import TodosFragment from './src/fragments/TodosFragment';
 
 Amplify.configure(awsExports);
 
@@ -27,6 +28,7 @@ function App(): JSX.Element {
         screenOptions={{headerShown: false}}>
         <Tab.Screen name="HomeFragment" component={HomeFragment} />
         <Tab.Screen name="BookmarksFragment" component={BookmarksFragment} />
+        <Tab.Screen name="TodosFragment" component={TodosFragment} />
         <Tab.Screen name="ProfileFragment" component={ProfileFragment} />
       </Tab.Navigator>
     </NavigationContainer>

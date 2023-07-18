@@ -9,7 +9,10 @@ export const createEvent = /* GraphQL */ `
     createEvent(input: $input, condition: $condition) {
       id
       name
-      description
+      date
+      duration
+      time
+      featured
       eventType
       eventPlatform
       createdAt
@@ -27,7 +30,10 @@ export const updateEvent = /* GraphQL */ `
     updateEvent(input: $input, condition: $condition) {
       id
       name
-      description
+      date
+      duration
+      time
+      featured
       eventType
       eventPlatform
       createdAt
@@ -45,7 +51,10 @@ export const deleteEvent = /* GraphQL */ `
     deleteEvent(input: $input, condition: $condition) {
       id
       name
-      description
+      date
+      duration
+      time
+      featured
       eventType
       eventPlatform
       createdAt
@@ -67,7 +76,10 @@ export const createBookmark = /* GraphQL */ `
       event {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -106,7 +118,10 @@ export const updateBookmark = /* GraphQL */ `
       event {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -133,7 +148,10 @@ export const deleteBookmark = /* GraphQL */ `
       event {
         id
         name
-        description
+        date
+        duration
+        time
+        featured
         eventType
         eventPlatform
         createdAt
@@ -155,21 +173,11 @@ export const createTodo = /* GraphQL */ `
   ) {
     createTodo(input: $input, condition: $condition) {
       id
-      name
       description
       date
       eventID
-      event {
-        id
-        name
-        description
-        eventType
-        eventPlatform
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
+      eventName
+      completed
       createdAt
       updatedAt
       owner
@@ -184,21 +192,11 @@ export const updateTodo = /* GraphQL */ `
   ) {
     updateTodo(input: $input, condition: $condition) {
       id
-      name
       description
       date
       eventID
-      event {
-        id
-        name
-        description
-        eventType
-        eventPlatform
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
+      eventName
+      completed
       createdAt
       updatedAt
       owner
@@ -213,21 +211,11 @@ export const deleteTodo = /* GraphQL */ `
   ) {
     deleteTodo(input: $input, condition: $condition) {
       id
-      name
       description
       date
       eventID
-      event {
-        id
-        name
-        description
-        eventType
-        eventPlatform
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
+      eventName
+      completed
       createdAt
       updatedAt
       owner
