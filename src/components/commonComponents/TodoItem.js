@@ -13,11 +13,11 @@ import {
   TouchableWithoutFeedback,
   View,
   Image,
-  ScrollView,
-  TextInput,
 } from 'react-native';
 import {deleteTodo, updateTodo} from '../../graphql/mutations';
 import {getTodo} from '../../graphql/queries';
+import DoneIcon from '../../../static/DoneIcon.png';
+import DeleteIcon from '../../../static/DeleteIcon.png';
 
 function TodoItem(props) {
   const {data, todos, setTodos} = props;
@@ -64,7 +64,7 @@ function TodoItem(props) {
 
   const triggerDelete = async () => {
     try {
-      const res = await API.graphql({
+      await API.graphql({
         query: deleteTodo,
         variables: {
           input: {
@@ -90,10 +90,14 @@ function TodoItem(props) {
         <Text style={styles.date}>{new Date(todo.date).toDateString()}</Text>
       </View>
       <TouchableWithoutFeedback onPress={triggerCompleted}>
-        <View style={styles.editButton}></View>
+        <View style={styles.doneContainer}>
+          <Image source={DoneIcon} style={styles.doneButton} />
+        </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={triggerDelete}>
-        <View style={styles.deleteButton}></View>
+        <View style={styles.deleteContainer}>
+          <Image source={DeleteIcon} style={styles.deleteButton} />
+        </View>
       </TouchableWithoutFeedback>
     </View>
   );
@@ -123,18 +127,33 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 12,
   },
-  editButton: {
+  doneContainer: {
     width: 40,
     height: 40,
     borderRadius: 10,
     backgroundColor: '#505050',
     marginRight: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  deleteButton: {
+  doneButton: {
+    width: 25,
+    height: 25,
+  },
+  deleteContainer: {
     width: 40,
     height: 40,
     borderRadius: 10,
+    padding: 10,
     backgroundColor: '#fd7272',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteButton: {
+    width: 25,
+    height: 25,
   },
 });
 

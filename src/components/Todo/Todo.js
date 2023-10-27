@@ -7,7 +7,7 @@
 
 import {API} from 'aws-amplify';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {listTodos} from '../../graphql/queries';
 import TodoItem from '../commonComponents/TodoItem';
 
@@ -20,7 +20,11 @@ function Todo({navigation}) {
         const res = await API.graphql({
           query: listTodos,
         });
-        setTodos(res.data.listTodos.items);
+        setTodos(
+          res.data.listTodos.items.sort(
+            (a, b) => new Date(a.date) - new Date(b.date),
+          ),
+        );
       } catch (err) {
         console.log(err);
       }
@@ -31,9 +35,13 @@ function Todo({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Your Todos</Text>
-      {todos.map(data => {
-        return <TodoItem data={data} todos={todos} setTodos={setTodos} />;
-      })}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.todosContainer}>
+          {todos.map(data => {
+            return <TodoItem data={data} todos={todos} setTodos={setTodos} />;
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -50,6 +58,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     marginBottom: 20,
+  },
+  todosContainer: {
+    flexDirection: 'column',
+    gap: 10,
   },
 });
 

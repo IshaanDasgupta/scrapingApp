@@ -8,16 +8,19 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Profile from '../components/Profile/Profile';
+import {useIsFocused} from '@react-navigation/core';
 
 const ProfileFragment = () => {
+  const isFocused = useIsFocused();
   const Stack = createNativeStackNavigator();
-
   return (
-    <Stack.Navigator
-      initialRouteName="Profile"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Profile" component={Profile} />
-    </Stack.Navigator>
+    isFocused && (
+      <Stack.Navigator
+        initialRouteName="Profile"
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Profile" component={Profile} />
+      </Stack.Navigator>
+    )
   );
 };
 

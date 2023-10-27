@@ -15,6 +15,7 @@ export const onCreateEvent = /* GraphQL */ `
       featured
       eventType
       eventPlatform
+      url
       createdAt
       updatedAt
       owner
@@ -36,6 +37,7 @@ export const onUpdateEvent = /* GraphQL */ `
       featured
       eventType
       eventPlatform
+      url
       createdAt
       updatedAt
       owner
@@ -57,6 +59,7 @@ export const onDeleteEvent = /* GraphQL */ `
       featured
       eventType
       eventPlatform
+      url
       createdAt
       updatedAt
       owner
@@ -82,6 +85,7 @@ export const onCreateBookmark = /* GraphQL */ `
         featured
         eventType
         eventPlatform
+        url
         createdAt
         updatedAt
         owner
@@ -112,6 +116,7 @@ export const onUpdateBookmark = /* GraphQL */ `
         featured
         eventType
         eventPlatform
+        url
         createdAt
         updatedAt
         owner
@@ -142,6 +147,7 @@ export const onDeleteBookmark = /* GraphQL */ `
         featured
         eventType
         eventPlatform
+        url
         createdAt
         updatedAt
         owner

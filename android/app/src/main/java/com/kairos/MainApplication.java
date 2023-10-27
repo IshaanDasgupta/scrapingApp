@@ -1,4 +1,4 @@
-package com.notify;
+package com.kairos;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

@@ -369,6 +369,7 @@ export const getEvent = /* GraphQL */ `
       updatedAt
       owner
       __typename
+      url
     }
   }
 `;

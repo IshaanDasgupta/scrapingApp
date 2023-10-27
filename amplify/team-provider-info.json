@@ -9,11 +9,141 @@
       "UnauthRoleName": "amplify-scraping-dev-230606-unauthRole",
       "StackName": "amplify-scraping-dev-230606",
       "StackId": "arn:aws:cloudformation:ap-south-1:049623781481:stack/amplify-scraping-dev-230606/c2d0be30-21a3-11ee-90d3-0a554d71a646",
+      "AmplifyAppId": "d2gzthuz4bb0iy",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-scraping-dev-230606-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-scraping-test-10745-authRole",
+      "UnauthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-test-10745-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-test-10745-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-scraping-test-10745-deployment",
+      "UnauthRoleName": "amplify-scraping-test-10745-unauthRole",
+      "StackName": "amplify-scraping-test-10745",
+      "StackId": "arn:aws:cloudformation:ap-south-1:049623781481:stack/amplify-scraping-test-10745/681c7930-2990-11ee-be6f-06816559c6dc",
+      "AmplifyAppId": "d2gzthuz4bb0iy"
+    },
+    "categories": {
+      "function": {
+        "scraping38964b9bPostConfirmation": {}
+      }
+    }
+  },
+  "hashnode": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-scraping-hashnode-10845-authRole",
+      "UnauthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-hashnode-10845-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-hashnode-10845-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-scraping-hashnode-10845-deployment",
+      "UnauthRoleName": "amplify-scraping-hashnode-10845-unauthRole",
+      "StackName": "amplify-scraping-hashnode-10845",
+      "StackId": "arn:aws:cloudformation:ap-south-1:049623781481:stack/amplify-scraping-hashnode-10845/8c45d400-2990-11ee-8760-02165d5d667c",
+      "AmplifyAppId": "d2gzthuz4bb0iy",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-scraping-hashnode-10845-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "scraping2044c133": {}
+      },
+      "function": {
+        "scraping2044c133PostConfirmation": {
+          "GROUP": "user"
+        }
+      }
+    }
+  },
+  "hackathon": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-scraping-hackathon-20121-authRole",
+      "UnauthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-hackathon-20121-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-hackathon-20121-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
+      "UnauthRoleName": "amplify-scraping-hackathon-20121-unauthRole",
+      "StackName": "amplify-scraping-hackathon-20121",
+      "StackId": "arn:aws:cloudformation:ap-south-1:049623781481:stack/amplify-scraping-hackathon-20121/e57b5610-2997-11ee-ae9f-0a9d5b86b3ec",
+      "AmplifyAppId": "d2gzthuz4bb0iy",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-scraping-hackathon-20121-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "api": {
+        "scraping": {}
+      },
+      "auth": {
+        "scrapingf3c6ba39": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "scrapingf3c6ba39PostConfirmation": {
+          "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
+          "s3Key": "amplify-builds/scrapingf3c6ba39PostConfirmation-4a526441745445435351-build.zip",
+          "GROUP": "user"
+        },
+        "leetCodeScraping": {
+          "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
+          "s3Key": "amplify-builds/leetCodeScraping-51784177386a77677a33-build.zip"
+        },
+        "gfgScraping": {
+          "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
+          "s3Key": "amplify-builds/gfgScraping-476e4a6e2b6c35563666-build.zip"
+        },
+        "codeChefScraping": {
+          "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
+          "s3Key": "amplify-builds/codeChefScraping-6b72704a6770554b574c-build.zip"
+        },
+        "codeForcesScraping": {
+          "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
+          "s3Key": "amplify-builds/codeForcesScraping-61643835374c756a4d39-build.zip"
+        },
+        "eventDeletion": {
+          "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
+          "s3Key": "amplify-builds/eventDeletion-3451692b734c366e6f4c-build.zip"
+        }
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-scraping-prod-21605-authRole",
+      "UnauthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-prod-21605-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-prod-21605-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-scraping-prod-21605-deployment",
+      "UnauthRoleName": "amplify-scraping-prod-21605-unauthRole",
+      "StackName": "amplify-scraping-prod-21605",
+      "StackId": "arn:aws:cloudformation:ap-south-1:049623781481:stack/amplify-scraping-prod-21605/f4661550-2999-11ee-a438-06f95c1d9b20",
       "AmplifyAppId": "d2gzthuz4bb0iy"
     },
     "categories": {
       "auth": {
-        "scraping82ab2552": {}
+        "scraping38964b9b": {}
+      },
+      "function": {
+        "scraping38964b9bPostConfirmation": {
+          "GROUP": "user"
+        }
+      }
+    }
+  },
+  "notify": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-scraping-notify-22602-authRole",
+      "UnauthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-notify-22602-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::049623781481:role/amplify-scraping-notify-22602-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-scraping-notify-22602-deployment",
+      "UnauthRoleName": "amplify-scraping-notify-22602-unauthRole",
+      "StackName": "amplify-scraping-notify-22602",
+      "StackId": "arn:aws:cloudformation:ap-south-1:049623781481:stack/amplify-scraping-notify-22602/57c10000-299b-11ee-9572-02ef098b4e0a",
+      "AmplifyAppId": "d2gzthuz4bb0iy",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-scraping-notify-22602-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "scrapingf3c6ba39": {}
       },
       "api": {
         "scraping": {}

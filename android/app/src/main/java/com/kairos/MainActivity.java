@@ -1,4 +1,4 @@
-package com.notify;
+package com.kairos;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

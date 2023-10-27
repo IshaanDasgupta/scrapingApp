@@ -5,12 +5,9 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
-import {
-  withAuthenticator,
-  useAuthenticator,
-} from '@aws-amplify/ui-react-native';
+import {useAuthenticator} from '@aws-amplify/ui-react-native';
 
 const userSelector = context => [context.user];
 

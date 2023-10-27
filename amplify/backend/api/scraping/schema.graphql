@@ -1,4 +1,15 @@
-type Event @model @searchable @auth(rules: [{allow: owner}]) {
+type Event
+  @model
+  @searchable
+  @aws_iam
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      {allow: owner, operations: [create, read, update, delete]}
+      {allow: public, provider: iam, operations: [read, delete]}
+      {allow: groups, groups: ["user"], operations: [read]}
+    ]
+  ) {
   id: ID!
   name: String!
   date: AWSDate!
@@ -7,6 +18,7 @@ type Event @model @searchable @auth(rules: [{allow: owner}]) {
   featured: Boolean
   eventType: typeEnum!
   eventPlatform: platfromEnum!
+  url: String
 }
 
 enum typeEnum {
@@ -26,14 +38,24 @@ enum platfromEnum {
   others
 }
 
-type Bookmark @model @searchable @auth(rules: [{allow: owner}]) {
+type Bookmark
+  @model
+  @searchable
+  @aws_iam
+  @aws_cognito_user_pools
+  @auth(rules: [{allow: owner}]) {
   id: ID!
   eventID: ID!
   eventName: String!
   event: Event @hasOne(fields: ["eventID"])
 }
 
-type Todo @model @searchable @auth(rules: [{allow: owner}]) {
+type Todo
+  @model
+  @searchable
+  @aws_iam
+  @aws_cognito_user_pools
+  @auth(rules: [{allow: owner}]) {
   id: ID!
   description: String
   date: AWSDate!

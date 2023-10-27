@@ -1,43 +1,102 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
 import {Text, View, SafeAreaView, Dimensions} from 'react-native';
 import CarosuelCard from './CarosuelCard';
+import {API} from 'aws-amplify';
+import {listEvents} from '../../graphql/queries';
 
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 
-const exampleItems = [
-  {
-    name: 'Item 1',
-    time: 'Text 1',
-  },
-  {
-    name: 'Item 2',
-    time: 'Text 2',
-  },
-  {
-    name: 'Item 3',
-    time: 'Text 3',
-  },
-  {
-    name: 'Item 4',
-    time: 'Text 4',
-  },
-  {
-    name: 'Item 5',
-    time: 'Text 5',
-  },
-];
+const CustomCarousel = props => {
+  const navigation = props.navigation;
 
-const CustomCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [carouselItems, setCarouselItems] = useState(exampleItems);
+  const [carouselItems, setCarouselItems] = useState([]);
   const ref = useRef(null);
 
   const screenWidth = Dimensions.get('window').width;
 
   const renderItem = useCallback(
-    ({item, index}) => <CarosuelCard data={item} />,
-    [],
+    ({item, index}) => (
+      <CarosuelCard eventData={item} navigation={navigation} />
+    ),
+    [navigation],
   );
+
+  useEffect(() => {
+    const fetchFeaturedEvents = async () => {
+      try {
+        let variables = {
+          filter: {
+            featured: {
+              eq: true,
+            },
+          },
+        };
+        let codeForcesData;
+
+        const eventData = await API.graphql({
+          query: listEvents,
+          variables: variables,
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        });
+        setCarouselItems(
+          eventData.data.listEvents.items
+            .filter(data => new Date(data.date) >= new Date())
+            .sort((a, b) => new Date(a.date) - new Date(b.date)),
+        );
+
+        if (eventData.data.listEvents.items.length <= 3) {
+          variables = {
+            filter: {
+              eventPlatform: {
+                eq: 'codeForces',
+              },
+            },
+          };
+          codeForcesData = await API.graphql({
+            query: listEvents,
+            variables: variables,
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          });
+          setCarouselItems(prev => [
+            ...prev,
+            ...codeForcesData.data.listEvents.items
+              .filter(data => new Date(data.date) >= new Date())
+              .sort((a, b) => new Date(a.date) - new Date(b.date)),
+          ]);
+        }
+
+        if (
+          codeForcesData.data.listEvents.items.length +
+            eventData.data.listEvents.items.length <=
+          3
+        ) {
+          variables = {
+            filter: {
+              eventPlatform: {
+                eq: 'codeChef',
+              },
+            },
+          };
+          const codeChefData = await API.graphql({
+            query: listEvents,
+            variables: variables,
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          });
+          setCarouselItems(prev => [
+            ...prev,
+            ...codeChefData.data.listEvents.items
+              .filter(data => new Date(data.date) >= new Date())
+              .sort((a, b) => new Date(a.date) - new Date(b.date)),
+          ]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchFeaturedEvents();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

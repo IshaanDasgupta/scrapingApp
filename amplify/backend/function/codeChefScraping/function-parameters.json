@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "api": {
+      "scraping": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

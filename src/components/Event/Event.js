@@ -11,17 +11,17 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
-  Pressable,
   TouchableWithoutFeedback,
-  Button,
   TextInput,
+  Image,
+  Linking,
+  Alert,
+  ScrollView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
 import {
   getEvent,
-  searchBookmarks,
   searchBookmarksForID,
   searchTodosInEvent,
 } from '../../graphql/queries';
@@ -31,6 +31,13 @@ import {
   deleteBookmark,
 } from '../../graphql/mutations';
 import TodoItem from '../commonComponents/TodoItem';
+import BackIcon from '../../../static/BackIcon.png';
+import FavIcon from '../../../static/FavIcon.png';
+import MarkedFavIcon from '../../../static/MarkedFavIcon.png';
+import DateIcon from '../../../static/DateIcon.png';
+import TimeIcon from '../../../static/TimeIcon.png';
+import TimeLeftIcon from '../../../static/TimeLeftIcon.png';
+import DurationIcon from '../../../static/DurationIcon.png';
 
 function Event(props) {
   const {navigation, route} = props;
@@ -53,7 +60,6 @@ function Event(props) {
           },
         });
         setEventData(res.data.getEvent);
-        // console.log(res.data.eventData);
       } catch (err) {
         console.log(err);
       }
@@ -91,7 +97,11 @@ function Event(props) {
             },
           },
         });
-        setTodos(res.data.searchTodos.items);
+        setTodos(
+          res.data.searchTodos.items.sort(
+            (a, b) => new Date(a.date) - new Date(b.date),
+          ),
+        );
       } catch (err) {
         console.log(err);
       }
@@ -158,9 +168,21 @@ function Event(props) {
         },
       });
       console.log(res.data.createTodo);
+      setDescription('');
+      setDate(new Date());
       toggleModal();
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const openEventURL = async () => {
+    const supported = await Linking.canOpenURL(eventData.url);
+    if (supported) {
+      await Linking.openURL(eventData.url);
+    } else {
+      console.log(`error in opening ${eventData.url}`);
+      Alert.alert('Could not open the URL');
     }
   };
 
@@ -169,15 +191,15 @@ function Event(props) {
       <TouchableWithoutFeedback onPress={handelBookmark}>
         <View style={styles.bookmarkContainer}>
           {bookmarkID.length === 0 ? (
-            <Text style={styles.bookmarkIcon}>B</Text>
+            <Image source={FavIcon} style={styles.bookmarkIcon} />
           ) : (
-            <Text style={styles.bookmarkIcon}>O</Text>
+            <Image source={MarkedFavIcon} style={styles.bookmarkIcon} />
           )}
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => navigation.navigate(origin)}>
         <View style={styles.backContainer}>
-          <Text style={styles.backIcon}>-</Text>
+          <Image source={BackIcon} style={styles.backIcon} />
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.bannerContainer}></View>
@@ -185,17 +207,36 @@ function Event(props) {
         <Text style={styles.name}>{eventData.name}</Text>
         <View style={styles.flex}>
           <View style={styles.infoFlex}>
-            <Text style={styles.infoIcon}>_</Text>
-            <Text style={styles.infoText}>30 April 2023</Text>
+            <Image source={DateIcon} style={styles.infoIcon} />
+            <Text style={styles.infoText}>
+              {new Date(eventData.date).toDateString()}
+            </Text>
           </View>
           <View style={styles.infoFlex}>
-            <Text style={styles.infoIcon}>_</Text>
-            <Text style={styles.infoText}>8 PM</Text>
+            <Image source={TimeIcon} style={styles.infoIcon} />
+            <Text style={styles.infoText}>{eventData.time} IST</Text>
           </View>
         </View>
         <View style={styles.timeLeftFlex}>
-          <Text style={styles.infoIcon}>_</Text>
-          <Text style={styles.infoText}>3 days left</Text>
+          <View style={styles.infoFlex}>
+            <Image source={TimeLeftIcon} style={styles.infoIcon} />
+            <Text style={styles.infoText}>
+              {' '}
+              {Math.ceil(
+                Math.abs(
+                  (new Date(eventData.date) - new Date()) /
+                    (24 * 60 * 60 * 1000),
+                ),
+              )}{' '}
+              days left
+            </Text>
+          </View>
+          {eventData.duration && (
+            <View style={styles.infoFlex}>
+              <Image source={DurationIcon} style={styles.infoIcon} />
+              <Text style={styles.infoText}>{eventData.duration}</Text>
+            </View>
+          )}
         </View>
         <View style={styles.headingFlex}>
           <Text style={styles.heading}>Your Todo's for this Event</Text>
@@ -205,19 +246,21 @@ function Event(props) {
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <View style={styles.todosContainer}>
-          {todos.map((data, index) => {
-            return (
-              <TodoItem
-                data={data}
-                key={index}
-                todos={todos}
-                setTodos={setTodos}
-              />
-            );
-          })}
-        </View>
-        <TouchableWithoutFeedback>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.todosContainer}>
+            {todos.map((data, index) => {
+              return (
+                <TodoItem
+                  data={data}
+                  key={index}
+                  todos={todos}
+                  setTodos={setTodos}
+                />
+              );
+            })}
+          </View>
+        </ScrollView>
+        <TouchableWithoutFeedback onPress={openEventURL}>
           <View style={styles.vistButton}>
             <Text style={styles.vistText}>Vist this in Web</Text>
           </View>
@@ -279,6 +322,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
   },
+  bookmarkIcon: {
+    width: 24,
+    height: 24,
+  },
   backContainer: {
     position: 'absolute',
     width: 40,
@@ -291,6 +338,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
+  },
+  backIcon: {
+    width: 16,
+    height: 16,
   },
   bannerContainer: {
     height: '30%',
@@ -326,16 +377,13 @@ const styles = StyleSheet.create({
   },
   timeLeftFlex: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 76.6,
     alignItems: 'center',
     marginBottom: 25,
   },
   infoIcon: {
     width: 14,
     height: 14,
-    backgroundColor: '#656565',
-    color: '#656565',
-    borderRadius: 7,
   },
   infoText: {
     fontSize: 12,
@@ -346,7 +394,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   heading: {
     fontSize: 14,
@@ -431,6 +479,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'center',
+    marginTop: 10,
   },
   vistText: {
     color: '#fff',

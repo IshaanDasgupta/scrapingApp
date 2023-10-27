@@ -6,7 +6,7 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,14 +14,25 @@ import {
   Image,
   TouchableWithoutFeedback,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
-import tempLogo from '../../../static/tempLogo.png';
 import {API} from 'aws-amplify';
 import {deleteBookmark} from '../../graphql/mutations';
+import MarkedFavIcon from '../../../static/MarkedFavIcon.png';
+import DateIcon from '../../../static/DateIcon.png';
+import TimeLeftIcon from '../../../static/TimeLeftIcon.png';
+import CardBG from '../../../static/BookmarkBG.png';
 
 function Card(props) {
   const {data, bookmarks, setBookmarks, navigation} = props;
 
+  const eventPlatform = {
+    leetcode: 'Leetcode',
+    unstop: 'Unstop',
+    gfg: 'GFG',
+    codeForces: 'Code Forces',
+    codeChef: 'Code Chef',
+  };
   const cardWidth = (Dimensions.get('window').width - 60) / 2;
 
   const removeBookmark = () => {
@@ -57,25 +68,42 @@ function Card(props) {
       <TouchableWithoutFeedback onPress={handleBookmark}>
         <View style={styles.bookmarkContainer}>
           <View>
-            <Text style={styles.bookmarkIcon}>O</Text>
+            <Image source={MarkedFavIcon} style={styles.bookmarkIcon} />
           </View>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={handlePress}>
         <View style={{width: cardWidth}}>
           <View style={styles.banner}>
-            <Image source={tempLogo} style={styles.image} />
+            <ImageBackground
+              source={CardBG}
+              style={styles.bgImage}
+              imageStyle={styles.bgImageStyle}>
+              <Text style={styles.platform}>
+                {eventPlatform[data.event.eventPlatform]}
+              </Text>
+            </ImageBackground>
           </View>
           <View style={styles.infoContainer}>
             <Text style={styles.name}>{data.event.name}</Text>
             <View style={styles.flex}>
               <View style={styles.infoFlex}>
-                <Text style={styles.infoIcon}></Text>
-                <Text style={styles.infoText}>30 April 2023</Text>
+                <Image source={DateIcon} style={styles.infoIcon} />
+                <Text style={styles.infoText}>
+                  {new Date(data.event.date).toDateString()}
+                </Text>
               </View>
               <View style={styles.infoFlex}>
-                <Text style={styles.infoIcon}></Text>
-                <Text style={styles.infoText}>3 days left</Text>
+                <Image source={TimeLeftIcon} style={styles.infoIcon} />
+                <Text style={styles.infoText}>
+                  {Math.ceil(
+                    Math.abs(
+                      (new Date(data.event.date) - new Date()) /
+                        (24 * 60 * 60 * 1000),
+                    ),
+                  )}{' '}
+                  days left
+                </Text>
               </View>
             </View>
           </View>
@@ -99,13 +127,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
   },
+  bookmarkIcon: {
+    width: 18,
+    height: 18,
+  },
   banner: {
     width: '100%',
-    backgroundColor: '#ff4260',
-    height: 150,
+    height: 140,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     position: 'relative',
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  bgImage: {
+    flex: 1,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+  },
+  bgImageStyle: {
+    borderRadius: 10,
   },
   infoContainer: {
     width: '100%',
@@ -131,19 +172,17 @@ const styles = StyleSheet.create({
   infoIcon: {
     width: 10,
     height: 10,
-    backgroundColor: '#000',
-    borderRadius: 5,
   },
   infoText: {
     fontSize: 12,
   },
-  image: {
-    width: 80,
-    height: 80,
+  platform: {
     position: 'absolute',
     bottom: 15,
     left: 15,
     zIndex: 1,
+    color: '#fff',
+    fontSize: 16,
   },
 });
 

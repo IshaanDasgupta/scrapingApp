@@ -7,16 +7,20 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "scraping82ab2552"
+          "resourceName": "scrapingf3c6ba39"
         }
       ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authscraping82ab2552"
+              "userPoolId": "authscrapingf3c6ba39"
             }
           }
         }
@@ -26,9 +30,19 @@
     }
   },
   "auth": {
-    "scraping82ab2552": {
+    "scrapingf3c6ba39": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "scrapingf3c6ba39PostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
         "mfaTypes": [
@@ -49,6 +63,210 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "scrapingf3c6ba39"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
+    }
+  },
+  "function": {
+    "codeChefScraping": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "scraping"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "codeForcesScraping": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "scraping"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "eventDeletion": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "scraping"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "gfgScraping": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "scraping"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "leetCodeScraping": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "scraping"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "scrapingf3c6ba39PostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_codeChefScraping_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "codeChefScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_codeChefScraping_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "codeChefScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_codeForcesScraping_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "codeForcesScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_codeForcesScraping_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "codeForcesScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_eventDeletion_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "eventDeletion"
+        }
+      ]
+    },
+    "AMPLIFY_function_eventDeletion_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "eventDeletion"
+        }
+      ]
+    },
+    "AMPLIFY_function_gfgScraping_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "gfgScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_gfgScraping_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "gfgScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_leetCodeScraping_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "leetCodeScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_leetCodeScraping_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "leetCodeScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_scrapingf3c6ba39PostConfirmation_GROUP": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "scrapingf3c6ba39PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_scrapingf3c6ba39PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "scrapingf3c6ba39PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_scrapingf3c6ba39PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "scrapingf3c6ba39PostConfirmation"
+        }
+      ]
     }
   }
 }

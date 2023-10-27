@@ -9,7 +9,6 @@ import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
   Image,
   ScrollView,
@@ -22,7 +21,6 @@ import searchIcon from '../../../static/SearchIcon.png';
 import {
   listBookmarksWithOnlyEvent,
   searchBookmarksForOnlyEvents,
-  searchBookmarksOnlyForEvents,
 } from '../../graphql/queries';
 
 function Bookmarks({navigation}) {
@@ -37,7 +35,11 @@ function Bookmarks({navigation}) {
           query: listBookmarksWithOnlyEvent,
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         });
-        setBookmarks(res.data.listBookmarks.items);
+        setBookmarks(
+          res.data.listBookmarks.items.sort(
+            (a, b) => new Date(a.event.date) - new Date(b.event.date),
+          ),
+        );
       } catch (err) {
         console.log(err);
       }
@@ -60,7 +62,11 @@ function Bookmarks({navigation}) {
           },
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         });
-        setSearchedBookmarks(res.data.searchBookmarks.items);
+        setSearchedBookmarks(
+          res.data.searchBookmarks.items.sort(
+            (a, b) => new Date(a.event.date) - new Date(b.event.date),
+          ),
+        );
       } catch (err) {
         console.log(err);
       }
@@ -71,7 +77,7 @@ function Bookmarks({navigation}) {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.searchBar}
@@ -81,7 +87,7 @@ function Bookmarks({navigation}) {
           />
           <Image source={searchIcon} style={styles.searchIcon} />
         </View>
-        <Text style={styles.heading}>Popular Catagories</Text>
+        <Text style={styles.heading}>Your Bookmarks</Text>
         <View style={styles.cardsFlex}>
           {searchText.length === 0
             ? bookmarks.map((bookmark, index) => {
@@ -142,6 +148,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingBottom: 0,
+    backgroundColor: '#f5f7fb',
   },
   searchContainer: {
     position: 'relative',
@@ -168,6 +176,7 @@ const styles = StyleSheet.create({
   cardsFlex: {
     flexDirection: 'column',
     gap: 20,
+    marginBottom: 20,
   },
   cardsRow: {
     flexDirection: 'row',
