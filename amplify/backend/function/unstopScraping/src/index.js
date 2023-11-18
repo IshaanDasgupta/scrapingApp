@@ -38,7 +38,7 @@ const mutation = /* GraphQL */ `
   }
 `;
 
-const gfgScrapping = async () => {
+const unstopScraping = async () => {
   try {
     const browser = await puppeteer.launch({
       executablePath: await chromium.executablePath(),
@@ -49,8 +49,7 @@ const gfgScrapping = async () => {
     });
 
     const page = await browser.newPage();
-
-    await page.goto('https://practice.geeksforgeeks.org/events');
+    await page.goto('https://unstop.com/hackathons?oppstatus=open');
     await page.setViewport({
       width: 1280,
       height: 800,
@@ -60,85 +59,84 @@ const gfgScrapping = async () => {
     await page.waitForTimeout(3000);
 
     const evaluate = await page.evaluate(async () => {
-      const getDate = givenStr => {
-        const months = {
-          January: '01',
-          February: '02',
-          March: '03',
-          April: '04',
-          May: '05',
-          June: '06',
-          July: '07',
-          August: '08',
-          September: '09',
-          October: '10',
-          November: '11',
-          December: '12',
-        };
-
-        const details = givenStr.split(' ');
-
-        return (
-          details[2] +
-          '-' +
-          months[details[0]] +
-          '-' +
-          (details[1].length == 2
-            ? '0' + details[1][0]
-            : details[1][0] + details[1][1])
-        );
+      const months = {
+        Jan: '01',
+        Feb: '02',
+        Mar: '03',
+        Apr: '04',
+        May: '05',
+        Jun: '06',
+        Jul: '07',
+        Aug: '08',
+        Sep: '09',
+        Oct: '10',
+        Nov: '11',
+        Dec: '12',
       };
 
-      const getNum = givenStr => {
-        let res = 0;
-        let factor = 1;
-        for (let i = givenStr.length - 1; i >= 0; i--) {
-          res += (givenStr[i] - '0') * factor;
-          factor *= 10;
-        }
-        return res;
+      const getDate = givenStr => {
+        const temp = givenStr.split(',')[0];
+        const details = temp.split(' ');
+        return '20' + details[2] + '-' + months[details[1]] + '-' + details[0];
       };
 
       const getTime = givenStr => {
-        const details = givenStr.split(' ');
-        const timeDetails = details[0].split(':');
+        const temp = givenStr.split(',')[1].trim();
+        const details = temp.split(' ');
 
-        return details[1] == 'PM'
-          ? (getNum(timeDetails[0]) + 12).toString() + ':' + timeDetails[1]
-          : details[0];
+        if (details[1] == 'AM') {
+          return details[0];
+        }
+
+        const timeDetails = details[0].split(':');
+        let hour = parseInt(timeDetails[0]);
+        hour += 12;
+        hour %= 24;
+
+        return hour + ':' + timeDetails[1];
       };
 
-      const events = document.querySelector(
-        '.eventsLanding_allEventsContainer__e8bYf',
-      ).children[1].children;
-      const eventList = [];
+      const hackathonsList = [];
 
-      for (let i = 0; i < events.length; i++) {
-        const data = events[i].children[0];
+      const hackathons = document.querySelectorAll('app-competition-listing');
+
+      for (const data of hackathons) {
+        await data.click();
+        await new Promise(function (resolve) {
+          setTimeout(resolve, 1500);
+        });
+
+        const details = document.querySelector(
+          'app-explore-opportunity-viewer',
+        );
+
+        const title = details
+          .querySelector('h1')
+          .innerText.replace('\n', ' - ');
 
         const url =
-          'https://practice.geeksforgeeks.org' + data.getAttribute('href');
+          'https://unstop.com/' +
+          details
+            .querySelector('app-competition-basic-form')
+            .children[0].children[0].children[1].querySelector('a')
+            .getAttribute('href');
 
-        const details = data.children;
+        const dateAndTime = details
+          .querySelector('app-competition-contacts-form')
+          .querySelector('li')
+          .querySelector('span').innerText;
 
-        const dateAndTime = details[1].children;
-        const date = getDate(dateAndTime[0].innerText);
-        const time = getTime(dateAndTime[1].innerText);
-
-        const name = details[2].innerText;
-
-        eventList.push({
-          name: name,
-          date: date,
-          eventType: 'contest',
-          eventPlatform: 'gfg',
+        hackathonsList.push({
+          name: title,
+          eventType: 'hackathon',
+          eventPlatform: 'unstop',
+          date: getDate(dateAndTime),
+          time: getTime(dateAndTime),
           url: url,
-          time: time,
-          featured: true,
         });
       }
 
-      return eventList;
+      return hackathonsList;
     });
 
     return evaluate;
@@ -152,7 +150,7 @@ const gfgScrapping = async () => {
  */
 
 export const handler = async event => {
-  const gfgData = await gfgScrapping();
+  const unstopData = await unstopScraping();
 
   const endpoint = new URL(GRAPHQL_ENDPOINT);
 
@@ -171,7 +169,7 @@ export const handler = async event => {
   const filter = {
     filter: {
       eventPlatform: {
-        eq: 'gfg',
+        eq: 'unstop',
       },
     },
   };
@@ -219,7 +217,7 @@ export const handler = async event => {
   }
 
   await Promise.all(
-    gfgData.map(async data => {
+    unstopData.map(async data => {
       if (previousEvents[data.name] === undefined) {
         const variables = {
           input: {
@@ -228,6 +226,7 @@ export const handler = async event => {
             eventType: data.eventType,
             eventPlatform: data.eventPlatform,
             url: data.url,
+            duration: data.duration,
             time: data.time,
             featured: data.featured,
           },

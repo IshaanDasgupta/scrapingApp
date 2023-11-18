@@ -161,6 +161,21 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "unstopScraping": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "scraping"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -265,6 +280,22 @@
         {
           "category": "function",
           "resourceName": "scrapingf3c6ba39PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_unstopScraping_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "unstopScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_unstopScraping_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "unstopScraping"
         }
       ]
     }

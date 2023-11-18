@@ -84,15 +84,15 @@
         },
         "leetCodeScraping": {
           "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
-          "s3Key": "amplify-builds/leetCodeScraping-51784177386a77677a33-build.zip"
+          "s3Key": "amplify-builds/leetCodeScraping-6c727642534965756b78-build.zip"
         },
         "gfgScraping": {
           "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
-          "s3Key": "amplify-builds/gfgScraping-476e4a6e2b6c35563666-build.zip"
+          "s3Key": "amplify-builds/gfgScraping-465662664d3150344273-build.zip"
         },
         "codeChefScraping": {
           "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
-          "s3Key": "amplify-builds/codeChefScraping-6b72704a6770554b574c-build.zip"
+          "s3Key": "amplify-builds/codeChefScraping-7738494c6c5653556d76-build.zip"
         },
         "codeForcesScraping": {
           "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
@@ -101,6 +101,10 @@
         "eventDeletion": {
           "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
           "s3Key": "amplify-builds/eventDeletion-3451692b734c366e6f4c-build.zip"
+        },
+        "unstopScraping": {
+          "deploymentBucketName": "amplify-scraping-hackathon-20121-deployment",
+          "s3Key": "amplify-builds/unstopScraping-6c56566e4c544a455676-build.zip"
         }
       }
     }

@@ -38,7 +38,7 @@ const mutation = /* GraphQL */ `
   }
 `;
 
-const codeForcesScrapping = async () => {
+const codeChefScrapping = async () => {
   try {
     const browser = await puppeteer.launch({
       executablePath: await chromium.executablePath(),
@@ -135,7 +135,7 @@ const codeForcesScrapping = async () => {
  */
 
 export const handler = async event => {
-  const codeForcesData = await codeForcesScrapping();
+  const codeChefData = await codeChefScrapping();
 
   const endpoint = new URL(GRAPHQL_ENDPOINT);
 
@@ -202,7 +202,7 @@ export const handler = async event => {
   }
 
   await Promise.all(
-    codeForcesData.map(async data => {
+    codeChefData.map(async data => {
       if (previousEvents[data.name] === undefined) {
         const variables = {
           input: {

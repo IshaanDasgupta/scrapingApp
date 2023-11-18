@@ -1,3 +1,5 @@
+#updating schema
+
 type Event
   @model
   @searchable
